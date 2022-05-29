@@ -1,15 +1,20 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "allowSyntheticDefaultImports": true,
+
+    "strict": true,
     "noImplicitAny": true,
     "noEmitOnError": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
+
     "sourceMap": false,
-    "target": "es2015",
     "outDir": "./build"
   },
-  "include": ["src/*.ts"],
+  "include": ["src/*.ts", "src/*.mts"],
   "exclude": ["node_modules"]
 }

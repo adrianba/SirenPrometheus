@@ -1,11 +1,12 @@
-import * as express from "express";
+import express from "express";
+import { boatMetrics } from "./boatdata.js";
 
 const port = process.env.PORT || 8880;
 let app = express();
 app.disable("x-powered-by");
 
 app.get("/metrics", (req, res) => {
-  res.send("# Data");
+  boatMetrics(res);
 });
 
 app.listen(port);
