@@ -1,3 +1,5 @@
+const UPDATE_INTERVAL_SECONDS = 5 * 60;
+
 import { Gauge, register } from "prom-client";
 import got from "got";
 
@@ -40,7 +42,7 @@ const is_bilgepump_running = new Gauge({
 
 setInterval(() => {
   setData();
-}, 60000);
+}, UPDATE_INTERVAL_SECONDS * 1000);
 
 function round(v: number) {
   return Math.round(v * 100.0) / 100.0;
