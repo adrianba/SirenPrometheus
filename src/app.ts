@@ -1,4 +1,5 @@
 import express from "express";
+import { log } from "./log.js";
 import { boatMetrics } from "./boatdata.js";
 
 const port = process.env.PORT || 8880;
@@ -10,4 +11,4 @@ app.get("/metrics", (req, res) => {
 });
 
 app.listen(port);
-console.log("Listening on port " + port);
+log("Listening on port " + port);

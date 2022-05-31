@@ -2,6 +2,7 @@ const UPDATE_INTERVAL_SECONDS = 5 * 60;
 
 import { Gauge, register } from "prom-client";
 import got from "got";
+import { log } from "./log.js";
 
 const SYSTEMID = process.env.BOAT_SYSTEMID;
 const DEVICEID = process.env.BOAT_DEVICEID;
@@ -49,7 +50,7 @@ function round(v: number) {
 }
 
 async function setData() {
-  console.log("Loading Siren Marine data.");
+  log("Loading Siren Marine data.");
   const boat: any = await got(boatStatusUrl).json();
   const vessel: any = boat.data.vessel;
   const wireless: any = await got(boatWirelessStatusUrl).json();
@@ -68,17 +69,18 @@ async function setData() {
   is_shorepower_connected.set(vessel.shorePower.isConnected ? 1 : 0);
   is_bilgepump_running.set(vessel.bilge1.state ? 1 : 0);
 
-  console.log("Updated data.");
+  log("Updated data.");
 }
 
 setData().then(() => {
-  console.log("Set initial data.");
+  log("Set initial data.");
 });
 
 export async function boatMetrics(res: any) {
   try {
     res.set("Content-Type", register.contentType);
     res.end(await register.metrics());
+    log("Return metrics");
   } catch (ex) {
     res.status(500).end(ex);
   }
