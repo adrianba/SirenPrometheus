@@ -5,6 +5,7 @@ WORKDIR /home/node/app
 COPY package*.json ./
 USER node
 RUN npm ci 
+RUN npm run build
 COPY --chown=node:node build/. ./build/.
 EXPOSE 8880
 CMD [ "node", "build/app.js" ]
