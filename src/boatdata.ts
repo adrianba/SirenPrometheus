@@ -4,11 +4,7 @@ import { Gauge, register } from "prom-client";
 import got from "got";
 import { log } from "./log.js";
 
-const SYSTEMID = process.env.BOAT_SYSTEMID;
-const DEVICEID = process.env.BOAT_DEVICEID;
-
-const boatStatusUrl = `https://siren-marine-api.leverege.com/v1/interface/${SYSTEMID}/boat/${DEVICEID}`;
-const boatWirelessStatusUrl = boatStatusUrl + "/wireless";
+const boatStatusUrl = "https://home-remix.adrianba.net/api/boatstatus";
 
 const temperature_galley = new Gauge({
   name: "temperature_galley",
@@ -20,7 +16,7 @@ const temperature_fridge = new Gauge({
 });
 const temperature_engine = new Gauge({
   name: "temperature_engine",
-  help: "Fridge Temperature",
+  help: "Engine Temperature",
 });
 
 const battery_voltage1 = new Gauge({
@@ -52,22 +48,14 @@ function round(v: number) {
 async function setData() {
   log("Loading Siren Marine data.");
   const boat: any = await got(boatStatusUrl).json();
-  const vessel: any = boat.data.vessel;
-  const wireless: any = await got(boatWirelessStatusUrl).json();
 
-  temperature_galley.set(round(vessel.tempProbe1.temperature));
-  temperature_fridge.set(
-    round(wireless.items[0].data.internalTemperature.current)
-  );
-  temperature_engine.set(
-    round(wireless.items[1].data.internalTemperature.current)
-  );
-
-  battery_voltage1.set(round(vessel.battery1.voltage.current));
-  battery_voltage2.set(round(vessel.battery2.voltage.current));
-
-  is_shorepower_connected.set(vessel.shorePower.isConnected ? 1 : 0);
-  is_bilgepump_running.set(vessel.bilge1.state ? 1 : 0);
+  temperature_galley.set(round(boat.temperature));
+  temperature_fridge.set(round(boat.fridgeTemp));
+  temperature_engine.set(round(boat.engineTemp));
+  battery_voltage1.set(round(boat.battery1));
+  battery_voltage2.set(round(boat.battery2));
+  is_shorepower_connected.set(boat.shorePowerConnected ? 1 : 0);
+  is_bilgepump_running.set(boat.bilgePumpRunning ? 1 : 0);
 
   log("Updated data.");
 }

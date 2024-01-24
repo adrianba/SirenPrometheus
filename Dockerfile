@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:20-alpine
 RUN mkdir -p /home/node/app/build && chown -R node:node /home/node/app
 ENV NODE_ENV=production
 WORKDIR /home/node/app
