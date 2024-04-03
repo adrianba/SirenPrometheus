@@ -37,6 +37,15 @@ const is_bilgepump_running = new Gauge({
   help: "Bilge Pump Running",
 });
 
+const longitude = new Gauge({
+  name: "longitude",
+  help: "Longitude",
+});
+const latitude = new Gauge({
+  name: "latitude",
+  help: "Latitude",
+});
+
 setInterval(() => {
   setData();
 }, UPDATE_INTERVAL_SECONDS * 1000);
@@ -56,6 +65,8 @@ async function setData() {
   battery_voltage2.set(round(boat.battery2));
   is_shorepower_connected.set(boat.shorePowerConnected ? 1 : 0);
   is_bilgepump_running.set(boat.bilgePumpRunning ? 1 : 0);
+  longitude.set(round(boat.longitude));
+  latitude.set(round(boat.latitude));
 
   log("Updated data.");
 }
