@@ -65,8 +65,8 @@ async function setData() {
   battery_voltage2.set(round(boat.battery2));
   is_shorepower_connected.set(boat.shorePowerConnected ? 1 : 0);
   is_bilgepump_running.set(boat.bilgePumpRunning ? 1 : 0);
-  longitude.set(round(boat.longitude));
-  latitude.set(round(boat.latitude));
+  longitude.set(boat.longitude);
+  latitude.set(boat.latitude);
 
   log("Updated data.");
 }
